@@ -36,9 +36,6 @@ class Form(BaseModel):
     posting_date: str
 
 
-'''def predict(form: Form):
-    df = pd.DataFrame.from_dict([form.dict()])
-    y = model['model'].predict(df)'''
 def predict(form: Form):
     df = pd.DataFrame([form.model_dump()])
     return model['model'].predict(df)
