@@ -5,10 +5,10 @@ from datetime import datetime
 import dill
 import pandas as pd
 
-with open(f'\\\\wsl$\\Ubuntu-22.04\\home\\alexa\\airflow_hw\\data\\models\\cars_pipe_202311030318.pkl', 'rb') as file:
+with open(f'~/airflow/airflow_hw/data/models/cars_pipe_202311030318.pkl', 'rb') as file:
     model = dill.load(file)
 
-path_to_files = '\\\\wsl$\\Ubuntu-22.04\\home\\alexa\\airflow_hw\\data\\test'
+path_to_files = '~/airflow/airflow_hw/data/test'
 files = os.listdir(path_to_files)
 
 
@@ -23,7 +23,7 @@ def predict():
             y = model['model'].predict(df)
             predictions.update({data['id']: y[0]})
 
-    final_directory = '\\\\wsl$\\Ubuntu-22.04\\home\\alexa\\airflow_hw\\data\\predictions'
+    final_directory = '~/airflow/airflow_hw/data/predictions'
     final_path = os.path.join(final_directory, f'predictions_{datetime.now().strftime("%Y%m%d%H%M")}')
 
     with open(final_path, 'w') as json_f:

@@ -64,7 +64,7 @@ def create_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def pipeline() -> None:
-    df = pd.read_csv('\\\\wsl$\\Ubuntu-22.04\\home\\alexa\\airflow_hw\\data\\train\\homework.csv')
+    df = pd.read_csv('~/airflow/airflow_hw/data/train/homework.csv')
 
     X = df.drop('price_category', axis=1)
     y = df['price_category']
@@ -118,7 +118,7 @@ def pipeline() -> None:
     logging.info(f'best model: {type(best_pipe.named_steps["classifier"]).__name__}, accuracy: {best_score:.4f}')
 
     best_pipe.fit(X, y)
-    model_filename = f'\\\\wsl$\\Ubuntu-22.04\\home\\alexa\\airflow_hw\\data\\models\\cars_pipe_{datetime.now().strftime("%Y%m%d%H%M")}.pkl'
+    model_filename = f'~/airflow/airflow_hw/data/models/cars_pipe_{datetime.now().strftime("%Y%m%d%H")}.pkl'
 
     with open(model_filename, 'wb') as file:
         dill.dump({
