@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 import dill
 import pandas as pd
+import os
 from sklearn.compose import ColumnTransformer, make_column_selector
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
@@ -12,10 +13,6 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-
-# Укажем путь к файлам проекта:
-# -> $PROJECT_PATH при запуске в Airflow
-# -> иначе - текущая директория при локальном запуске
 
 
 def filter_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -64,7 +61,7 @@ def create_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def pipeline() -> None:
-    df = pd.read_csv('~/airflow/airflow_hw/data/train/homework.csv')
+    df = pd.read_csv('~/airflow_hw/data/train/homework.csv')
 
     X = df.drop('price_category', axis=1)
     y = df['price_category']
@@ -118,7 +115,8 @@ def pipeline() -> None:
     logging.info(f'best model: {type(best_pipe.named_steps["classifier"]).__name__}, accuracy: {best_score:.4f}')
 
     best_pipe.fit(X, y)
-    model_filename = f'~/airflow/airflow_hw/data/models/cars_pipe_{datetime.now().strftime("%Y%m%d%H")}.pkl'
+    final_directory = os.path.expanduser('~/airflow_hw/data/models')
+    model_filename = os.path.join(final_directory, f'cars_pipe_{datetime.now().strftime("%Y%m%d%H")}.pkl')
 
     with open(model_filename, 'wb') as file:
         dill.dump({

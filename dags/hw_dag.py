@@ -31,7 +31,7 @@ with DAG(
     )
     predict = PythonOperator(
         task_id='predict',
-        python_callable=predict(),
+        python_callable=predict,
     )
 
     pipeline >> predict
