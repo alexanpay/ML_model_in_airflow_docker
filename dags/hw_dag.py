@@ -24,6 +24,7 @@ with DAG(
         dag_id='car_price_prediction',
         schedule_interval="00 15 * * *",
         default_args=args,
+        max_active_runs=1,
 ) as dag:
     pipeline = PythonOperator(
         task_id='pipeline',
