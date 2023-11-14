@@ -5,12 +5,15 @@ from datetime import datetime
 import dill
 import pandas as pd
 
+path = os.environ.get('PROJECT_PATH', '.')
+
 
 def predict():
-    with open(f'~/airflow_hw/data/models/cars_pipe_{datetime.now().strftime("%Y%m%d%H")}.pkl', 'rb') as file:
+    best_model = sorted(os.listdir(f'{path}/data/models'))[-1]
+    with open(f'{path}/data/models/{best_model}', 'rb') as file:
         model = dill.load(file)
 
-    path_to_files = '~/airflow_hw/data/test'
+    path_to_files = f'{path}/data/test'
     files = os.listdir(path_to_files)
 
     predictions = {}
@@ -23,8 +26,7 @@ def predict():
             y = model['model'].predict(df)
             predictions.update({data['id']: y[0]})
 
-    final_directory = '~/airflow_hw/data/predictions'
-    final_path = os.path.join(final_directory, f'predictions_{datetime.now().strftime("%Y%m%d%H%M")}')
+    final_path = f'{path}/data/predictions/predictions_{datetime.now().strftime("%Y%m%d%H%M")}'
 
     with open(final_path, 'w') as json_f:
         json.dump(predictions, json_f)
